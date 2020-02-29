@@ -14,6 +14,8 @@ RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev \
     && apk add postgresql-dev \
     && pip install psycopg2 \
+    && apk add jpeg-dev zlib-dev \
+    && pip install pillow \
     && apk del build-deps
 
 # install dependencies

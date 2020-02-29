@@ -1,5 +1,6 @@
 import os
-# import dj_database_url
+import dj_database_url
+from django.contrib.messages import constants as messages
 
 ################################
 ##     BASE CONFIGURATION     ##
@@ -8,7 +9,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'gbgsg-!tp&cy&8@19mh@&#-1=k#kqg5^f)1=08zsmdy04i!k4c'
 DEBUG = int(os.environ.get('DEBUG', default=1))
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'dj-property.herokuapp.com']
 
 
 ################################
@@ -22,6 +23,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pages.apps.PagesConfig',
+    'accounts.apps.AccountsConfig',
+    'contacts.apps.ContactsConfig',
+    'listings.apps.ListingsConfig',
+    'realtors.apps.RealtorsConfig'
 ]
 
 ###############################
@@ -113,9 +119,9 @@ DATABASES = {
 ##    POSTGRES CONFIGURATION  ##
 ################################
 
-# DATABASE_URL = os.environ.get('DATABASE_URL')
-# db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=500, ssl_require=True)
-# DATABASES['default'].update(db_from_env)
+DATABASE_URL = os.environ.get('DATABASE_URL')
+db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=500, ssl_require=True)
+DATABASES['default'].update(db_from_env)
 
 # DATABASES = {
 #     'default': {
@@ -127,3 +133,22 @@ DATABASES = {
 #         'PORT': config('SQL_PORT'),
 #     }
 # }
+
+################################
+##    MESSAGES CONFIGURATION  ##
+################################
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
+
+################################
+##     EMAIL CONFIGURATION    ##
+################################
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
